@@ -11,10 +11,16 @@ function Newtons()
     [x_root1, ~] = newton(@test_func, x_init, max_iter, dx_tol, y_tol);
     [f_root1, ~] = test_func(x_root1);
 
+    x1 = -5;
+    x2 = 5;
+
+    [x_rootb, ~] = bisection_method(@test_func, x1, x2, y_tol, max_iter);
+    [f_rootb, ~] = test_func(x_rootb);
+
     hold on;
     plot(x_range, y_vals, "k");
     plot(x_range, x_range * 0, "r--");
-    plot(x_root1, f_root1, "bo")
+    plot(x_rootb, f_rootb, "bo")
 end
 
 function [x_root, exit] = newton(input_func, x_init, max_iter, dx_tol, y_tol)
@@ -43,7 +49,56 @@ function [x_root, exit] = newton(input_func, x_init, max_iter, dx_tol, y_tol)
 
 end
 
+function [result, exit] = bisection_method(test_func01, x1, x2, tolerance, max_iter)
+    current_iter = 1;
+    y_val_1 = test_func01(x1);
+    y_val_2 = test_func01(x2);
+    min_y_val = min(abs(y_val_1), abs(y_val_2));
+    
+    while(abs(min_y_val) > tolerance && current_iter < max_iter)
+        new_x = (x1 + x2) / 2;
+        min_y_val = test_func01(new_x);
+        
+        if min_y_val > 0 && y_val_1 > 0
+            x1 = new_x;
+        elseif min_y_val < 0 && y_val_1 < 0
+            x1 = new_x;
+        elseif min_y_val > 0 && y_val_2 > 0
+            x2 = new_x;
+        elseif min_y_val < 0 && y_val_2 < 0
+            x2 = new_x;
+        end
+
+        current_iter = current_iter + 1;
+    end
+    
+    if current_iter < max_iter
+        exit = 0;
+    else
+        exit = 1;
+    end
+
+    if current_iter == 1 && min_y_val == y_val_1
+        result = x1;
+    elseif current_iter == 1 && min_y_val == y_val_2
+        result = x2;
+    else 
+        result = new_x;
+    end
+end
+
 function [f_val, dfdx] = test_func(x)
     f_val = (x.^3)/100 - (x.^2)/8 + 2*x + 6*sin(x/2 + 6) - .7 - exp(x/6);
     dfdx = (3*x.^2)/100 - x/4 + 2 + 3*cos(x/2 + 6) - exp(x/6)/6;
+end
+
+
+
+
+
+%Secant Method
+function [x_root, exit] = secant(input_func, x_n1, x_n2, max_iter, dx_tol, y_tol)
+
+
+
 end
