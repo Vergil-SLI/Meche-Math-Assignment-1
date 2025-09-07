@@ -64,7 +64,7 @@ function [x_root, exit, guess_list] = newton(input_func, x_init, max_iter, dx_to
 end
 
 %Secant Method
-function [x_root, exit] = secant(input_func, x_n1, x_n2, max_iter, dx_tol, y_tol)
+function [x_root, exit, guess_list] = secant(input_func, x_n1, x_n2, max_iter, dx_tol, y_tol)
 
     
     [fval1, ~] = input_func(x_n1);
@@ -77,12 +77,11 @@ function [x_root, exit] = secant(input_func, x_n1, x_n2, max_iter, dx_tol, y_tol
         temp_x1 = x_n1;
 
         x_n1 = ((x_n2*fval1) - (x_n1*fval2))/(fval1 - fval2);
-
         x_n2 = temp_x1;
-
         [fval1, ~] = input_func(x_n1);
         [fval2, ~] = input_func(x_n2);
-
+        
+        guess_list = [guess_list, x_n1];
         count = count + 1;
 
     end
