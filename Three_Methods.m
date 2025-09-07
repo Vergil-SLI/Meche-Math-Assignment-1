@@ -72,7 +72,7 @@ function [x_root, exit] = secant(input_func, x_n1, x_n2, max_iter, dx_tol, y_tol
 
     count = 0;
 
-    while count < max_iter && abs(fval1) > y_tol && abs(x_n1 - x_n2) > dx_tol
+    while count < max_iter && abs(fval1) > y_tol && abs(x_n1 - x_n2) > dx_tol && abs(fval1 - fval2) > dx_tol
    
         temp_x1 = x_n1;
 
