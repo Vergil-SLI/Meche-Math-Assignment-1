@@ -1,25 +1,29 @@
 %Bisection Method
-function [result, exit] = bisection_method(test_func01, x1, x2, tolerance, max_iter)
-    current_iter = 1;
-    y_val_1 = test_func01(x1);
-    y_val_2 = test_func01(x2);
-    min_y_val = min(abs(y_val_1), abs(y_val_2));
-    
-    while(abs(min_y_val) > tolerance && current_iter < max_iter)
-        new_x = (x1 + x2) / 2;
-        min_y_val = test_func01(new_x);
-        
-        if min_y_val > 0 && y_val_1 > 0
-            x1 = new_x;
-        elseif min_y_val < 0 && y_val_1 < 0
-            x1 = new_x;
-        elseif min_y_val > 0 && y_val_2 > 0
-            x2 = new_x;
-        elseif min_y_val < 0 && y_val_2 < 0
-            x2 = new_x;
-        end
+function [x_root, exit, guess_list] = bisection(input_func, x1, x2, tol, max_iter)
 
-        current_iter = current_iter + 1;
+    if abs(input_func(x1)) < abs(input_func(x2))
+        x_root = x1;
+    else
+        x_root = x2;
+    end
+
+    guess_list = x_root;
+    
+    if input_func(x1) / abs(input_func(x1)) ~= input_func(x2) / abs(input_func(x2))
+        current_iter = 1;
+        while(abs(input_func(x_root)) > tol && current_iter < max_iter)
+            x_root = (x1 + x2) / 2;
+            current_iter = current_iter + 1;
+            guess_list = [guess_list, x_root];
+    
+            if input_func(x_root) / abs(input_func(x_root)) == input_func(x1) / abs(input_func(x1))
+                x1 = x_root;
+            else
+                x2 = x_root;
+            end
+        end
+    else
+        current_iter = max_iter;
     end
     
     if current_iter < max_iter
@@ -27,24 +31,17 @@ function [result, exit] = bisection_method(test_func01, x1, x2, tolerance, max_i
     else
         exit = 1;
     end
-
-    if current_iter == 1 && min_y_val == y_val_1
-        result = x1;
-    elseif current_iter == 1 && min_y_val == y_val_2
-        result = x2;
-    else 
-        result = new_x;
-    end
 end
 
 %Newton's Method
-function [x_root, exit] = newton(input_func, x_init, max_iter, dx_tol, y_tol)
+function [x_root, exit, guess_list] = newton(input_func, x_init, max_iter, dx_tol, y_tol)
     
     x_prev = x_init - 2*dx_tol;
     x_curr = x_init;
     [f_val, dfdx_val] = input_func(x_curr);
 
     count = 0;
+    guess_list = x_curr;
 
     while abs(dfdx_val) > dx_tol && abs(x_curr - x_prev) > dx_tol && count<max_iter && abs(f_val)>y_tol
         x_prev = x_curr;
@@ -52,6 +49,7 @@ function [x_root, exit] = newton(input_func, x_init, max_iter, dx_tol, y_tol)
 
         [f_val, dfdx_val] = input_func(x_curr);
         count = count + 1;
+        guess_list = [guess_list, x_curr];
     end
     x_root = x_curr;
 
