@@ -8,14 +8,14 @@ function Newtons()
     dx_tol = 1e-7;
     y_tol = 1e-7;
 
-    % [x_root1, ~] = newton(@test_func, x_init, max_iter, dx_tol, y_tol);
-    % [f_root1, ~] = test_func(x_root1);
+    [x_root1, ~] = newton(@test_func, x_init, max_iter, dx_tol, y_tol);
+    [f_root1, ~] = test_func(x_root1);
 
     x1 = -5;
     x2 = 5;
 
-    % [x_rootb, ~] = bisection_method(@test_func, x1, x2, y_tol, max_iter);
-    % [f_rootb, ~] = test_func(x_rootb);
+    [x_rootb, ~] = bisection_method(@test_func, x1, x2, y_tol, max_iter);
+    [f_rootb, ~] = test_func(x_rootb);
     
     
     [x_roots, ~] = secant(@test_func, x1, x2, max_iter, dx_tol, y_tol);
@@ -25,6 +25,9 @@ function Newtons()
     plot(x_range, y_vals, "k");
     plot(x_range, x_range * 0, "r--");
     plot(x_roots, f_roots, "bo")
+    disp([x_roots, f_roots])
+    disp([x_rootb, f_rootb])
+    disp([x_root1, f_root1])
 end
 
 function [x_root, exit] = newton(input_func, x_init, max_iter, dx_tol, y_tol)
