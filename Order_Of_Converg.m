@@ -1,19 +1,68 @@
-function [error_n, error_n1] = bisection_converg()
+% function [error_n, error_n1] = bisection_converg()
+% 
+%     error_n = [];
+%     error_n1 = [];
+%     [x_root_init, ~, ~] = bisection(@test_func, -5, 5, 1e-14, 200);
+% 
+%     for i = 1:1000
+%         [x_root, ~, guess] = bisection(@test_func, x_root_init - .1 - rand(), x_root_init + .1 + rand(), 1e-14, 200);
+% 
+%         for j = 1:(length(guess)-1)
+%             % error_n(end + 1) = guess(j) - 0.7174;
+%             % error_n1(end + 1) = guess(j+1) - 0.7174; 
+%             error_n = [error_n, abs(guess(j) - x_root)];
+%             error_n1 = [error_n1, abs(guess(j+1) - x_root)];
+%         end
+%     end
+% 
+%     loglog(error_n, error_n1,'ro','markerfacecolor','r','markersize',1);
+% end
 
-    error_n = [];
-    error_n1 = [];
-    [x_root_init, ~, ~] = bisection(@test_func, -5, 5, 1e-14, 200);
+% function [error_n, error_n1] = newton_converg()
+% 
+%     error_n = [];
+%     error_n1 = [];
+% 
+%     x_init = -2;
+%     dx_tol = 1e-14;
+%     y_tol = 1e-14;
+%     [x_root_init, ~, ~] = newton(@test_func, x_init, 200, dx_tol, y_tol);
+% 
+%     for i = 1:1000
+%         [x_root, ~, guess] = newton(@test_func, x_root_init - .1 -rand(), 200, dx_tol, y_tol);
+% 
+%         for j = 1:(length(guess)-1)
+%             % error_n(end + 1) = guess(j) - 0.7174;
+%             % error_n1(end + 1) = guess(j+1) - 0.7174; 
+%             error_n = [error_n, abs(guess(j) - x_root)];
+%             error_n1 = [error_n1, abs(guess(j+1) - x_root)];
+%         end
+%     end
+% 
+%     loglog(error_n, error_n1,'ro','markerfacecolor','r','markersize',1);
+% end
 
-    for i = 1:1000
-        [x_root, ~, guess] = bisection(@test_func, x_root_init - 1 * rand(), x_root_init + 1 * rand(), 1e-14, 200);
-
-        for j = 1:(length(guess)-1)
-            % error_n(end + 1) = guess(j) - 0.7174;
-            % error_n1(end + 1) = guess(j+1) - 0.7174; 
-            error_n = [error_n, abs(guess(j) - x_root)];
-            error_n1 = [error_n1, abs(guess(j+1) - x_root)];
-        end
-    end
-
-    loglog(error_n, error_n1,'ro','markerfacecolor','r','markersize',1);
-end
+% function [error_n, error_n1] = secant_converg()
+% 
+%     error_n = [];
+%     error_n1 = [];
+% 
+%     x_n1 = -5;
+%     x_n2 = 5;
+%     dx_tol = 1e-14;
+%     y_tol = 1e-14;
+%     [x_root_init, ~, ~] = secant(@test_func, x_n1, x_n2, 200, dx_tol, y_tol);
+% 
+%     for i = 1:1000
+%         [x_root, ~, guess] = secant(@test_func, x_root_init - .1-rand(), x_root_init + .1+rand(), 200, dx_tol, y_tol);
+% 
+%         for j = 1:(length(guess)-1)
+%             % error_n(end + 1) = guess(j) - 0.7174;
+%             % error_n1(end + 1) = guess(j+1) - 0.7174; 
+%             error_n = [error_n, abs(guess(j) - x_root)];
+%             error_n1 = [error_n1, abs(guess(j+1) - x_root)];
+%         end
+%     end
+% 
+%     loglog(error_n, error_n1,'ro','markerfacecolor','r','markersize',1);
+% end

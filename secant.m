@@ -5,6 +5,7 @@ function [x_root, exit, guess_list] = secant(input_func, x_n1, x_n2, max_iter, d
     [fval2, ~] = input_func(x_n2);
 
     count = 0;
+    guess_list = [x_n2, x_n1];
 
     while count < max_iter && abs(fval1) > y_tol && abs(x_n1 - x_n2) > dx_tol && abs(fval1 - fval2) > dx_tol
    
