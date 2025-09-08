@@ -1,13 +1,11 @@
 function [error_n, error_n1] = bisection_converg()
 
-    input1 = linspace(-5, 0, 1000);
-    input2 = linspace(1, 6, 1000);
-
     error_n = [];
     error_n1 = [];
+    [x_root_init, ~, ~] = bisection(@test_func, -5, 5, 1e-14, 200);
 
-    for i = 1:length(input1)
-        [x_root, ~, guess] = bisection(@test_func, input1(i), input2(i), 1e-14, 200);
+    for i = 1:1000
+        [x_root, ~, guess] = bisection(@test_func, x_root_init - 1 * rand(), x_root_init + 1 * rand(), 1e-14, 200);
 
         for j = 1:(length(guess)-1)
             % error_n(end + 1) = guess(j) - 0.7174;
