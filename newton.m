@@ -15,13 +15,13 @@ function [x_root, exit, guess_list] = newton(input_func, x_init, max_iter, dx_to
         count = count + 1;
         guess_list = [guess_list, x_curr];
     end
+
     x_root = x_curr;
 
-    exit = 0;
+    exit = 1;
 
-    if abs(x_curr - x_prev) > dx_tol && abs(f_val) > y_tol
-        exit = 1;
-
+    if count < max_iter && abs(dfdx_val) > dx_tol && abs(x_curr - x_prev)
+        exit = 0;
     end
 
 end

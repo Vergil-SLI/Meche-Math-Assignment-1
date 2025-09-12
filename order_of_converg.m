@@ -81,8 +81,6 @@ function [error_n, error_n1, x_regression, y_regression, p, k] = bisection_conve
         [x_root, ~, guess] = bisection(@test_func, x_root_init - .1 - rand(), x_root_init + .1 + rand(), 1e-14, 200);
 
         for j = 1:(length(guess)-1)
-            % error_n(end + 1) = guess(j) - 0.7174;
-            % error_n1(end + 1) = guess(j+1) - 0.7174; 
             error_n = [error_n, abs(guess(j) - x_root)];
             error_n1 = [error_n1, abs(guess(j+1) - x_root)];
         end
@@ -121,8 +119,6 @@ function [error_n, error_n1, x_regression, y_regression, p, k] = newton_converg(
         [x_root, ~, guess] = newton(@test_func, x_root_init + 5*(rand()-.5), 200, dx_tol, y_tol);
 
         for j = 1:(length(guess)-1)
-            % error_n(end + 1) = guess(j) - 0.7174;
-            % error_n1(end + 1) = guess(j+1) - 0.7174; 
             error_n = [error_n, abs(guess(j) - x_root)];
             error_n1 = [error_n1, abs(guess(j+1) - x_root)];
         end
@@ -162,8 +158,6 @@ function [error_n, error_n1, x_regression, y_regression, p, k] = secant_converg(
         [x_root, ~, guess] = secant(@test_func, x_root_init + 6*(rand()-.5), x_root_init + 6*(rand()-.5), 200, dx_tol, y_tol);
 
         for j = 1:(length(guess)-1)
-            % error_n(end + 1) = guess(j) - 0.7174;
-            % error_n1(end + 1) = guess(j+1) - 0.7174; 
             error_n = [error_n, abs(guess(j) - x_root)];
             error_n1 = [error_n1, abs(guess(j+1) - x_root)];
         end
