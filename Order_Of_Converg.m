@@ -70,6 +70,7 @@ function converg_plots()
 
 
 end
+
 function [error_n, error_n1, x_regression, y_regression, p, k] = bisection_converg()
 
     error_n = [];
