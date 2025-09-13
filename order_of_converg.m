@@ -1,4 +1,4 @@
-function converg_plots()
+function order_of_converg()
     
     %Fzero
     subplot(2, 2, 1);
