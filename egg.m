@@ -5,7 +5,7 @@ function eggxample01()
     %specify the position and orientation of the egg
     x0 = 5; y0 = 5; theta = pi/6;
     
-    % [xmax, exit, guess_list] = bound_box(x0, y0, theta, egg_params)
+    [xmax, exit, guess_list] = bound_box(x0, y0, theta, egg_params)
 
 
     %set up the axis
@@ -15,31 +15,21 @@ function eggxample01()
     %plot the origin of the egg frame
     plot(x0,y0,'ro','markerfacecolor','r');
 
-    %compute the perimeter of the egg
-
-% for s = 0:.02:1
+    % %compute the perimeter of the egg
+    % Vx = [];
+    % Vy = [];
+    % egg_wrapper2x = @(s) egg_wrapper1x(s,x0,y0,theta,egg_params);
+    % egg_wrapper2y = @(s) egg_wrapper1y(s,x0,y0,theta,egg_params);
     % 
-    %     [V_single, G_single] = egg_func(s,x0,y0,theta,egg_params);
-    %     vvals = [vvals, V_single];
-    %     gvals = [gvals, G_single];
+    % for s= 0:0.02:1
+    %     [Vx1, Gx1] = egg_wrapper2x(s);
+    %     Vx(end+1) = Vx1;
+    %     [Vy1, Gy1] = egg_wrapper2y(s);
+    %     Vy(end+1) = Vy1;
     % end
-    Vx = [];
-    Vy = [];
-    egg_wrapper2x = @(s) egg_wrapper1x(s,x0,y0,theta,egg_params);
-    egg_wrapper2y = @(s) egg_wrapper1y(s,x0,y0,theta,egg_params);
-
-    for s= 0:0.02:1
-        [Vx1, Gx1] = egg_wrapper2x(s);
-        Vx(end+1) = Vx1;
-        [Vy1, Gy1] = egg_wrapper2y(s);
-        Vy(end+1) = Vy1;
-    end
-
-    Vx
-    Vy
-
-    %plot the perimeter of the egg
-    plot(Vx,Vy,'k');
+    % 
+    % %plot the perimeter of the egg
+    % plot(Vx,Vy,'k');
 
 
     % %compute a single point along the egg (s=.8)
@@ -61,7 +51,7 @@ function eggxample01()
     % % plot(tan_vec_x,tan_vec_y,'g')
 end
 
-function [xmax, exit, guess_list] = bound_box(x0, y0, theta, egg_params)
+function [root, exit, guess_list] = bound_box(x0, y0, theta, egg_params)
     ymax = 0;
     ymin = 0;
     xmin = 0;
