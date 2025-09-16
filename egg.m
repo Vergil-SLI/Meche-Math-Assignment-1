@@ -3,10 +3,7 @@ function eggxample01()
     egg_params = struct();
     egg_params.a = 3; egg_params.b = 2; egg_params.c = .15;
     %specify the position and orientation of the egg
-    x0 = 5; y0 = 5; theta = pi/6;
-
-    [x1_s, x2_s, y1_s, y2_s] = bound_box(x0, y0, theta, egg_params);
-    
+    x0 = 5; y0 = 5; theta = pi/6;    
 
     %set up the axis
     hold on; axis equal; axis square
@@ -35,27 +32,46 @@ function eggxample01()
     %plot the perimeter of the egg
     plot(Vx,Vy,'k');
 
-    %calculate boundaries from s value and plot
-    [~, x1_bound] = egg_wrapper2x(x1_s);
-    [~, x2_bound] = egg_wrapper2x(x2_s);
-    [~, y1_bound] = egg_wrapper2y(y1_s);
-    [~, y2_bound] = egg_wrapper2y(y2_s);
+    %find and plot boundaries
+    [x1_bound, x2_bound, y1_bound, y2_bound] = bound_box(x0, y0, theta, egg_params);
 
     line([x1_bound,x2_bound], [y1_bound, y1_bound], 'Color', 'r', 'LineWidth', 2);
     line([x1_bound,x2_bound], [y2_bound, y2_bound], 'Color', 'r', 'LineWidth', 2);
     line([x1_bound,x1_bound], [y1_bound, y2_bound], 'Color', 'r', 'LineWidth', 2);
     line([x2_bound,x2_bound], [y1_bound, y2_bound], 'Color', 'r', 'LineWidth', 2);
-    
-    
 
+    % calculate time of collision
+    y_ground = 1;
+    x_wall = 30;
+
+    [t_ground,t_wall] = collision_func(@egg_trajectory, egg_params, y_ground, x_wall)
 end
 
 function [t_ground,t_wall] = collision_func(traj_fun, egg_params, y_ground, x_wall)
+    t_ground = -1;
+    t_wall = -1;
+    t = 0;
+    max_t = 100;
 
+    while (t_ground == -1 || t_wall == -1) && t < max_t
+        [x0, y0, theta] = traj_fun(t);
+        [x1_bound, x2_bound, y1_bound, y2_bound] = bound_box(x0, y0, theta, egg_params);
+        
+        % x_wall is between the 2 x_bounds
+        if ((x1_bound <= x_wall && x_wall <= x2_bound) || (x2_bound <= x_wall && x_wall <= x1_bound)) && t_wall == -1
+            t_wall = t;
+        end
+
+        if ((y1_bound <= y_ground && y_ground <= y2_bound) || (y2_bound <= y_ground && y_ground <= y1_bound)) && t_ground == -1
+            t_ground = t;
+        end
+
+        t = t + 0.1;
+    end
 end
 
 
-function [x1_s, x2_s, y1_s, y2_s] = bound_box(x0, y0, theta, egg_params)
+function [x1_bound, x2_bound, y1_bound, y2_bound] = bound_box(x0, y0, theta, egg_params)
     egg_wrapper2x = @(s) egg_wrapper1x(s,x0,y0,theta,egg_params);
     egg_wrapper2y = @(s) egg_wrapper1y(s,x0,y0,theta,egg_params);
     
@@ -66,7 +82,10 @@ function [x1_s, x2_s, y1_s, y2_s] = bound_box(x0, y0, theta, egg_params)
     y1_s = round(mod(y1_s, 1), 4);
     x2_s = -1;
     y2_s = -1;
-
+    
+    % guess x and y "s values" using secant with increments of 0.1
+    % normalize guesses to be between 0~1, and double check the 2nd value
+    % isn't equal to the first
     for guess = 0:0.1:1
         x2_s_guess = secant(egg_wrapper2x, guess, guess + 0.1, 200, 1e-14, 1e-14);
         y2_s_guess = secant(egg_wrapper2y, guess, guess + 0.1, 200, 1e-14, 1e-14);
@@ -81,7 +100,12 @@ function [x1_s, x2_s, y1_s, y2_s] = bound_box(x0, y0, theta, egg_params)
             y2_s = y2_s_guess;
         end
     end
-
+    
+    %convert boundary s values to actual x-y coords
+    [~, x1_bound] = egg_wrapper2x(x1_s);
+    [~, x2_bound] = egg_wrapper2x(x2_s);
+    [~, y1_bound] = egg_wrapper2y(y1_s);
+    [~, y2_bound] = egg_wrapper2y(y2_s);
 end
 
 
