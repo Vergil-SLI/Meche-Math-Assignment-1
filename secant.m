@@ -22,10 +22,12 @@ function [x_root, exit, guess_list] = secant(input_func, x_n1, x_n2, max_iter, d
     end
 
     x_root = x_n1;
-    exit = 1;
+    exit = 0;
 
-    if count < max_iter && abs(x_n1 - x_n2) > dx_tol && abs(fval1 - fval2) > dx_tol
-        exit = 0;
+    if count > max_iter 
+        exit = "too many iterations";
+    elseif abs(fval1 - fval2) < dx_tol
+        exit = "avoiding division by zero";
     end
 
 end
